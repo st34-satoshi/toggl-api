@@ -11,9 +11,8 @@ import json
 
 class TogglDriver:
 
-    def __init__(self, _token, _mail_address):
+    def __init__(self, _token):
         self._token = _token  # api_token
-        self._mail_address = _mail_address  # your mail address
         self._workspace_id = self.get_workspace_id(self._token)
         self.projects_dictionary = self.get_projects(_token, self._workspace_id)
         self._headers = {'Content-Type': 'application/json'}
@@ -75,8 +74,7 @@ class TogglDriver:
 
 if __name__ == '__main__':
     token = ''  # TODO your token. check here → https://www.toggl.com/app/profile
-    mail = ''  # TODO your mail
-    toggl = TogglDriver(_token=token, _mail_address=mail)
+    toggl = TogglDriver(_token=token)
     # stop running entry
     id = toggl.get_running_time_entry()
     if id is not None:

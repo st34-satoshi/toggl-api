@@ -6,8 +6,8 @@ togglのAPIをpythonからたたく
 ## Requirement
 `pip install -r requirements.txt`
 ## Usage
-- tokenを設定する．トークンは`https://www.toggl.com/app/profile`で確認できる
-- メールアドレス(mail)を設定する
+- main.pyのtokenを設定する．トークンは`https://www.toggl.com/app/profile`で確認できる
+- main.pyのメールアドレス(mail)を設定する
 - `python3 main.py`
 
 ## Reference

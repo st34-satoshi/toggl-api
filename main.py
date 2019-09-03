@@ -74,8 +74,8 @@ class TogglDriver:
 
 
 if __name__ == '__main__':
-    token = ''  # your token. check here → https://www.toggl.com/app/profile
-    mail = ''  # your mail
+    token = ''  # TODO your token. check here → https://www.toggl.com/app/profile
+    mail = ''  # TODO your mail
     toggl = TogglDriver(_token=token, _mail_address=mail)
     # stop running entry
     id = toggl.get_running_time_entry()

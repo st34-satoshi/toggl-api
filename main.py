@@ -18,6 +18,9 @@ class TogglDriver:
         # get workspace id from api/v8/workspaces
         r = requests.get('https://www.toggl.com/api/v8/workspaces',
                          auth=(api_token, 'api_token'))
+        if r.status_code != 200:
+            print("Error: cannot get workspace id. please check the token.")
+            return ""
 
         # JSON形式でデータのエクスポート
         data = r.json()
@@ -30,6 +33,9 @@ class TogglDriver:
         p_dictionary = {}
         r = requests.get('https://www.toggl.com/api/v8/workspaces/{0}/projects'.format(work_space_id),
                          auth=(api_token, 'api_token'))
+        if r.status_code != 200:
+            print("Error: cannot get projects. please check the token.")
+            return p_dictionary
 
         data = r.json()
         for d in data:
@@ -40,6 +46,9 @@ class TogglDriver:
         # return time entry id of current entry
         r = requests.get('https://www.toggl.com/api/v8/time_entries/current',
                          auth=HTTPBasicAuth(self._token, 'api_token'))
+        if r.status_code != 200:
+            print("Error: cannot get running time entry. please check the token.")
+            return ""
         data = r.json()['data']
         if data is None:
             return None
@@ -74,7 +83,7 @@ if __name__ == '__main__':
     # stop running entry
     id = toggl.get_running_time_entry()
     if id is not None:
-        toggl.stop(id)
+        r = toggl.stop(id)
 
     # start entry
     toggl.start("game", "Hobby")  # example, description and project

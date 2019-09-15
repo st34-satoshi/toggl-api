@@ -1,11 +1,7 @@
 # coding: utf-8
 
-import sys, io, os
 import requests
 from requests.auth import HTTPBasicAuth
-# from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime as dt
-from datetime import timedelta
 import json
 
 

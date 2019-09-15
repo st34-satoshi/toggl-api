@@ -10,7 +10,7 @@ class TogglDriver:
     def __init__(self, _token):
         self._token = _token  # api_token
         self._workspace_id = self.get_workspace_id(self._token)
-        self.projects_dictionary = self.get_projects(_token, self._workspace_id)
+        self.projects_dictionary = self.get_projects(self._token, self._workspace_id)
         self._headers = {'Content-Type': 'application/json'}
 
     @staticmethod
@@ -58,9 +58,9 @@ class TogglDriver:
         if project in self.projects_dictionary:
             pid = self.projects_dictionary[project]
         else:
-            # TODO make new project
-            print("Error")
-            return
+            # when no project, make it here.
+            self.create_project(project)
+            pid = self.projects_dictionary[project]
 
         params = {"time_entry": {"description": description, "pid": pid, "created_with": "python"}}
         r = requests.post('https://www.toggl.com/api/v8/time_entries/start',
@@ -68,6 +68,16 @@ class TogglDriver:
                           headers=self._headers,
                           data=json.dumps(params))
         print('time entry start. HTTP status :', r.status_code)
+
+    def create_project(self, project_name):
+        # '{"project":{"name":"An awesome project","wid":777,"template_id":10237,"is_private":true,"cid":123397}}'
+        params = {"project":{"name": project_name, "wid": self._workspace_id, "is_private": True}}
+        r = requests.post('https://www.toggl.com/api/v8/projects',
+                          auth=HTTPBasicAuth(self._token, 'api_token'),
+                          headers=self._headers,
+                          data=json.dumps(params))
+        print('create project. HTTP status :', r.status_code)
+        self.projects_dictionary = self.get_projects(self._token, self._workspace_id)
 
     def stop(self, running_time_entry_id):
         url = 'https://www.toggl.com/api/v8/time_entries/' + str(running_time_entry_id) + '/stop'
@@ -84,6 +94,7 @@ if __name__ == '__main__':
     id = toggl.get_running_time_entry()
     if id is not None:
         r = toggl.stop(id)
-
     # start entry
     toggl.start("game", "Hobby")  # example, description and project
+    # create a new project
+    toggl.create_project("new project")

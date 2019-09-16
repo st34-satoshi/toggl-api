@@ -1,5 +1,5 @@
 # toggl-api
-## 概要
+## Description
 togglのAPIをpythonからたたく
 - タイマーをスタートさせる
 - タイマーをストップさせる

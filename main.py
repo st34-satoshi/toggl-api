@@ -70,7 +70,6 @@ class TogglDriver:
         print('time entry start. HTTP status :', r.status_code)
 
     def create_project(self, project_name):
-        # '{"project":{"name":"An awesome project","wid":777,"template_id":10237,"is_private":true,"cid":123397}}'
         params = {"project":{"name": project_name, "wid": self._workspace_id, "is_private": True}}
         r = requests.post('https://www.toggl.com/api/v8/projects',
                           auth=HTTPBasicAuth(self._token, 'api_token'),
@@ -86,6 +85,18 @@ class TogglDriver:
         print('time entry stop. HTTP status :', r.status_code)
         return r
 
+    def get_reports(self, mail_address):
+        params = {
+            'user_agent': mail_address,
+            'workspace_id': self._workspace_id,
+            'since': '2019-09-11',
+            'until': '2019-09-11',
+        }
+        r = requests.get('https://toggl.com/reports/api/v2/details',
+                         auth=HTTPBasicAuth(self._token, 'api_token'),
+                         params=params)
+        json_r = r.json()
+
 
 if __name__ == '__main__':
     token = ''  # TODO your token. check here → https://www.toggl.com/app/profile
@@ -98,3 +109,7 @@ if __name__ == '__main__':
     toggl.start("game", "Hobby")  # example, description and project
     # create a new project
     toggl.create_project("new project")
+
+    # get reports
+    email = ''  # TODO your mail address
+    toggl.get_reports(email)
